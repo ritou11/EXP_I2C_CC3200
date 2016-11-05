@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>EXP_I2C</name>
+	<name>EXP_SPI</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -28,7 +28,7 @@
 		<link>
 			<name>startup_ccs.c</name>
 			<type>1</type>
-			<locationURI>copy_PROJECT_LOC/common/startup_ccs.c</locationURI>
+			<locationURI>PROJECT_LOC/common/startup_ccs.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

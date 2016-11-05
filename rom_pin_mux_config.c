@@ -36,7 +36,7 @@
 //
 //*****************************************************************************
 
-// This file was automatically generated on 2016/11/5 at 下午1:49:36
+// This file was automatically generated on 2016/11/5 at 下午11:26:55
 // by TI PinMux version 
 //
 //*****************************************************************************
@@ -62,10 +62,8 @@ void PinMuxConfig(void)
     MAP_PinModeSet(PIN_03, PIN_MODE_0);
     MAP_PinModeSet(PIN_18, PIN_MODE_0);
     MAP_PinModeSet(PIN_21, PIN_MODE_0);
-    MAP_PinModeSet(PIN_45, PIN_MODE_0);
     MAP_PinModeSet(PIN_50, PIN_MODE_0);
     MAP_PinModeSet(PIN_52, PIN_MODE_0);
-    MAP_PinModeSet(PIN_53, PIN_MODE_0);
     MAP_PinModeSet(PIN_58, PIN_MODE_0);
     MAP_PinModeSet(PIN_59, PIN_MODE_0);
     MAP_PinModeSet(PIN_60, PIN_MODE_0);
@@ -78,15 +76,16 @@ void PinMuxConfig(void)
     //
     MAP_PRCMPeripheralClkEnable(PRCM_GPIOA1, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkEnable(PRCM_GPIOA2, PRCM_RUN_MODE_CLK);
+    MAP_PRCMPeripheralClkEnable(PRCM_GPIOA3, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkEnable(PRCM_UARTA0, PRCM_RUN_MODE_CLK);
     MAP_PRCMPeripheralClkEnable(PRCM_I2CA0, PRCM_RUN_MODE_CLK);
 
     //
-    // Configure PIN_64 for GPIO Output
+    // Configure PIN_64 for GPIO Input
     //
     MAP_PinTypeGPIO(PIN_64, PIN_MODE_0, false);
-    MAP_GPIODirModeSet(GPIOA1_BASE, 0x2, GPIO_DIR_MODE_OUT);
+    MAP_GPIODirModeSet(GPIOA1_BASE, 0x2, GPIO_DIR_MODE_IN);
 
     //
     // Configure PIN_04 for GPIO Input
@@ -99,6 +98,18 @@ void PinMuxConfig(void)
     //
     MAP_PinTypeGPIO(PIN_15, PIN_MODE_0, false);
     MAP_GPIODirModeSet(GPIOA2_BASE, 0x40, GPIO_DIR_MODE_IN);
+
+    //
+    // Configure PIN_53 for GPIO Output
+    //
+    MAP_PinTypeGPIO(PIN_53, PIN_MODE_0, false);
+    MAP_GPIODirModeSet(GPIOA3_BASE, 0x40, GPIO_DIR_MODE_OUT);
+
+    //
+    // Configure PIN_45 for GPIO Output
+    //
+    MAP_PinTypeGPIO(PIN_45, PIN_MODE_0, false);
+    MAP_GPIODirModeSet(GPIOA3_BASE, 0x80, GPIO_DIR_MODE_OUT);
 
     //
     // Configure PIN_08 for SPI0 GSPI_CS

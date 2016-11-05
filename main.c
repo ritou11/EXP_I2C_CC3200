@@ -21,6 +21,7 @@
 #include "ht_gpio_if.h"
 #include "uart_if.h"
 #include "i2c_if.h"
+#include "oled_if.h"
 
 extern void (* const g_pfnVectors[])(void);
 
@@ -75,13 +76,18 @@ int main(void) {
 
     Message("Hello world! This is a test of UART on CC3200.\n\r");
     Message("Please input something to test UART:");
-
+/*
     cnt=GetCmd(cmd,50);
 
     if(cnt>0) Report("Success, recevied %d chars.\n\r",cnt);
     else Report("Failed.\n\r");
 
     Report("Send Charactor 't' to get temperature.\n\r");
+*/
+    OLEDInit();
+
+    LCD_Print(0,0,"µÚÆß½ì·ÉË¼¿¨¶û±­");
+
     I2C_IF_Open(I2C_MASTER_MODE_STD);
     InitTermInt();
 
