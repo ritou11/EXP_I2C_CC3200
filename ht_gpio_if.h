@@ -69,6 +69,7 @@ extern void GPIO_IF_LedToggle(unsigned char ucLedNum);
 extern void GPIO_IF_ButtonConfigure(unsigned char ucPins);
 extern unsigned char GPIO_IF_ButtonRead(unsigned char btnNum);
 extern void Button1Interrupt();
+extern void Button2Interrupt();
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.

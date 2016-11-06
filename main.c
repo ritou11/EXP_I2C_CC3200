@@ -61,8 +61,6 @@ BoardInit(void)
 }
 
 int main(void) {
-	char cmd[50];
-	int cnt;
 
 	BoardInit();
 
@@ -74,19 +72,18 @@ int main(void) {
     GPIO_IF_ButtonConfigure(BTN1|BTN2);
     GPIO_IF_LedOff(MCU_RED_LED_GPIO);
 
-    Message("Hello world! This is a test of UART on CC3200.\n\r");
-    Message("Please input something to test UART:");
-/*
-    cnt=GetCmd(cmd,50);
+    Report("This is my CC3200 Demo. Now it has uart,i2c,spi,gpio.\n\r");
 
-    if(cnt>0) Report("Success, recevied %d chars.\n\r",cnt);
-    else Report("Failed.\n\r");
-
-    Report("Send Charactor 't' to get temperature.\n\r");
-*/
     OLEDInit();
 
-    LCD_Print(0,0,"第七届飞思卡尔杯");
+    OLED_Print(0,0,(byte *)"清");
+    OLED_Print(0,2,(byte *)"华");
+    OLED_Print(0,4,(byte *)"大");
+    OLED_Print(0,6,(byte *)"学");
+
+    OLED_Print(112,1,(byte *)"电");
+    OLED_Print(112,3,(byte *)"机");
+    OLED_Print(112,5,(byte *)"系");
 
     I2C_IF_Open(I2C_MASTER_MODE_STD);
     InitTermInt();

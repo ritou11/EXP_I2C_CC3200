@@ -57,6 +57,7 @@
 
 #include "uart_if.h"
 #include "i2c_if.h"// to read temperature
+#include "oled_if.h" // to draw lib logo
 
 #define IS_SPACE(x)       (x == 32 ? 1 : 0)
 
@@ -69,7 +70,8 @@ static unsigned long __Errorlog;
 // Global variable indicating input length
 //*****************************************************************************
 unsigned int ilen=1;
-
+unsigned char g_ucRxBuffer[UART_IF_BUFFER];
+unsigned int g_uiRxBufferIdx = 0;
 
 //*****************************************************************************
 //
@@ -106,8 +108,8 @@ void
 InitTermInt(){
 #ifndef NOTERM
 	MAP_UARTIntRegister(CONSOLE, TermInterrupt);
-	MAP_UARTFIFOLevelSet(CONSOLE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
-	MAP_UARTIntEnable(CONSOLE, UART_INT_RX);
+	MAP_UARTFIFOLevelSet(CONSOLE, UART_FIFO_TX7_8, UART_FIFO_RX7_8);
+	MAP_UARTIntEnable(CONSOLE, UART_INT_RX | UART_INT_RT);
 #endif
 	__Errorlog = 0;
 }
@@ -379,11 +381,26 @@ TermInterrupt(){
 	long lCmd;
 	int iRetVal;
 	unsigned char ucData[2];
+	int i;
+
 	ulStatus = MAP_UARTIntStatus(CONSOLE, true);
 	MAP_UARTIntClear(CONSOLE, ulStatus);
 	if(ulStatus & UART_INT_RX){
 		while(MAP_UARTCharsAvail(CONSOLE)){
-			lCmd= MAP_UARTCharGet(CONSOLE);
+			lCmd = MAP_UARTCharGet(CONSOLE);
+			if(g_uiRxBufferIdx < UART_IF_BUFFER)
+				g_ucRxBuffer[g_uiRxBufferIdx++]=lCmd;
+		}
+	}
+	if(ulStatus & UART_INT_RT){
+		while(MAP_UARTCharsAvail(CONSOLE)){
+			lCmd = MAP_UARTCharGet(CONSOLE);
+			if(g_uiRxBufferIdx < UART_IF_BUFFER)
+				g_ucRxBuffer[g_uiRxBufferIdx++]=lCmd;
+		}
+		for(i = 0; i < g_uiRxBufferIdx; i++)
+		{
+			lCmd= g_ucRxBuffer[i];
 			switch(lCmd){
 			case 't':
 		    	ucData[0] = 1;
@@ -399,9 +416,19 @@ TermInterrupt(){
 				break;
 			case 'e':
 				Report("1234\n\r");
+				break;
+			case 'd':
+				OLED_DrawLibLogo();
+				break;
+			case 'c':
+				OLED_CLS();
+				break;
+			case 'f':
+				OLED_Fill(0x22);
 			default:
 				break;
 			}
 		}
+		g_uiRxBufferIdx = 0; // Clear the buffer after handling
 	}
 }

@@ -36,7 +36,7 @@
 //
 //*****************************************************************************
 
-// This file was automatically generated on 2016/11/5 at 下午11:26:55
+// This file was automatically generated on 2016/11/6 at 下午2:04:50
 // by TI PinMux version 
 //
 //*****************************************************************************
@@ -82,10 +82,10 @@ void PinMuxConfig(void)
     MAP_PRCMPeripheralClkEnable(PRCM_I2CA0, PRCM_RUN_MODE_CLK);
 
     //
-    // Configure PIN_64 for GPIO Input
+    // Configure PIN_64 for GPIO Output
     //
     MAP_PinTypeGPIO(PIN_64, PIN_MODE_0, false);
-    MAP_GPIODirModeSet(GPIOA1_BASE, 0x2, GPIO_DIR_MODE_IN);
+    MAP_GPIODirModeSet(GPIOA1_BASE, 0x2, GPIO_DIR_MODE_OUT);
 
     //
     // Configure PIN_04 for GPIO Input

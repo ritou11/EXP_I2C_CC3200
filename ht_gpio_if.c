@@ -10,7 +10,6 @@
 
 // Standard includes
 #include <stdio.h>
-
 // Driverlib includes
 #include "hw_types.h"
 #include "hw_ints.h"
@@ -22,9 +21,14 @@
 #include "prcm.h"
 #include "rom.h"
 #include "rom_map.h"
-
+// OS includes
+#if defined(USE_TIRTOS) || defined(USE_FREERTOS) || defined(SL_PLATFORM_MULTI_THREADED)
+#include <stdlib.h>
+#include "osi.h"
+#endif
 // Common interface include
 #include "ht_gpio_if.h"
+#include "oled_if.h"
 
 //****************************************************************************
 //                      GLOBAL VARIABLES                                   
@@ -45,6 +49,8 @@ unsigned int g_uiLED1Port = 0,g_uiLED2Port = 0,g_uiLED3Port = 0;
 unsigned int g_uiBTN1Port = 0,g_uiBTN2Port = 0;
 unsigned char g_ucLED1Pin,g_ucLED2Pin,g_ucLED3Pin;
 unsigned char g_ucBTN1Pin,g_ucBTN2Pin;
+
+unsigned char g_ucLogoStatus;
 
 #define GPIO_LED1 9
 #define GPIO_LED2 10
@@ -137,6 +143,12 @@ GPIO_IF_ButtonConfigure(unsigned char ucPins){
 						&g_uiBTN2Port,
 						&g_ucBTN2Pin
 						);
+		GPIO_IF_ConfigureNIntEnable(g_uiBTN2Port,
+								g_ucBTN2Pin,
+								GPIO_RISING_EDGE,
+								Button2Interrupt
+								);
+		g_ucLogoStatus = 0;
 	}
 
 }
@@ -493,6 +505,20 @@ Button1Interrupt(){
 	if(ulStatus & g_ucBTN1Pin){
 		GPIO_IF_LedToggle(MCU_RED_LED_GPIO);
 	}
+}
+void
+Button2Interrupt(){
+	unsigned long ulStatus;
+	ulStatus = MAP_GPIOIntStatus(g_uiBTN2Port,1);
+	MAP_GPIOIntClear(g_uiBTN2Port,ulStatus);
+	if(ulStatus & g_ucBTN2Pin){
+		if(!g_ucLogoStatus)
+			OLED_DrawLibLogo();
+		else
+			OLED_CLS();
+		g_ucLogoStatus = !g_ucLogoStatus;
+	}
+
 }
 //*****************************************************************************
 //
